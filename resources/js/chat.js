@@ -8,17 +8,14 @@ const filePreviewName = document.getElementById("filePreviewName");
 const fileCancelBtn = document.getElementById("fileCancelBtn");
 const sendBtn = document.getElementById("sendBtn");
 
-// ============================================================
+
 // Scroll ke bawah otomatis
-// ============================================================
 function scrollBottom() {
     if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
 }
 scrollBottom();
 
-// ============================================================
 // Format ukuran file
-// ============================================================
 function formatFileSize(bytes) {
     if (!bytes) return "";
     if (bytes < 1024) return bytes + " B";
@@ -26,9 +23,7 @@ function formatFileSize(bytes) {
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
-// ============================================================
 // Render bubble pesan (teks, gambar, atau file)
-// ============================================================
 function addMessage(data, mine = false) {
     if (!chatBody) return;
 
@@ -64,11 +59,12 @@ function addMessage(data, mine = false) {
         link.target = "_blank";
         link.download = data.file_name ?? "file";
         link.className = mine ? "file-link-sent" : "file-link-received";
-        link.innerHTML = `📄 <span>${data.file_name ?? "Download File"}</span>
-                          <small class="d-block">${formatFileSize(data.file_size)}</small>`;
+        link.innerHTML = `
+            <i class="bi bi-file-earmark-fill me-2"></i>
+            <span>${data.file_name ?? "Download File"}</span>
+            <small class="d-block">${formatFileSize(data.file_size)}</small>`;       
         bubble.appendChild(link);
     } else {
-        // Pesan teks biasa
         bubble.innerText = data.message;
     }
 
@@ -88,16 +84,14 @@ function addMessage(data, mine = false) {
     scrollBottom();
 }
 
-// ============================================================
 // Preview file sebelum dikirim
-// ============================================================
 if (fileInput) {
     fileInput.addEventListener("change", function () {
         const file = this.files[0];
         if (!file) return;
 
         if (filePreviewName)
-            filePreviewName.textContent = `📎 ${file.name} (${formatFileSize(file.size)})`;
+            filePreviewName.textContent = '${file.name} (${formatFileSize(file.size)})';
         if (filePreview) filePreview.classList.remove("d-none");
     });
 }
@@ -110,9 +104,7 @@ if (fileCancelBtn) {
     });
 }
 
-// ============================================================
 // Kirim pesan via AJAX (support teks + file)
-// ============================================================
 if (form) {
     form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -153,9 +145,7 @@ if (form) {
     });
 }
 
-// ============================================================
 // WebSocket — terima pesan realtime
-// ============================================================
 if (window.authUserId) {
     window.Echo.private("chat." + window.authUserId).listen(
         ".MessageSent",

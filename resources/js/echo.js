@@ -15,13 +15,13 @@ window.Echo = new Echo({
 
 // Debug koneksi WebSocket di console browser
 window.Echo.connector.pusher.connection.bind("connected", () => {
-    console.log("[WebSocket] Terhubung ke Reverb ✅");
+    console.log("[WebSocket] Terhubung ke Reverb");
 });
 
 window.Echo.connector.pusher.connection.bind("error", (err) => {
-    console.error("[WebSocket] Koneksi error ❌", err);
+    console.error("[WebSocket] Koneksi error", err);
 });
 
 window.Echo.connector.pusher.connection.bind("disconnected", () => {
-    console.warn("[WebSocket] Terputus dari Reverb ⚠️");
+    console.warn("[WebSocket] Terputus dari Reverb");
 });

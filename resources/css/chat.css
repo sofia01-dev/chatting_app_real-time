@@ -3,7 +3,7 @@ body { background: #F5FEFF; margin: 0; font-family: 'Segoe UI', sans-serif; }
 
 /* ══ SIDEBAR ══ */
 .sidebar {
-    height: 100vh;
+    height:calc(100vh - 70px);
     background: #F5FEFF;
     border-right: 2px solid #dceeff;
     overflow-y: auto;
@@ -68,7 +68,7 @@ body { background: #F5FEFF; margin: 0; font-family: 'Segoe UI', sans-serif; }
 
 /* ══ CHAT AREA ══ */
 .chat-area {
-    height: 100vh;
+    height:calc(100vh - 70px);
     display: flex;
     flex-direction: column;
     background: #eaf4ff;
@@ -291,4 +291,101 @@ emoji-picker {
 
 .search-box{
     padding-left:42px;
+}
+
+.top-navbar{
+    height:70px;
+    background:#F5FEFF;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+    border-bottom:2px solid #dceeff;
+}
+
+.navbar-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#0E2F76;
+    font-size:20px;
+    font-weight:700;
+}
+
+.navbar-user{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logout-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+}
+.chart-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-card {
+width: 100%;
+max-width: 400px;
+background: #ffffff;
+padding: 35px;
+border-radius: 20px;
+box-shadow: 0 8px 25px rgba(14,47,118,0.15);
+}
+
+.chart-card h2 {
+text-align: center;
+color: #0E2F76;
+margin-bottom: 25px;
+}
+
+.chart-card input {
+width: 100%;
+padding: 12px 15px;
+margin-bottom: 15px;
+border: 1.5px solid #dceeff;
+border-radius: 12px;
+box-sizing: border-box;
+font-size: 14px;
+outline: none;
+}
+
+.chart-card input {
+border-color: #0E2F76;
+}
+
+.chart-card button {
+width: 100%;
+padding: 12px;
+background: #0E2F76;
+color: white;
+border: none;
+border-radius: 12px;
+cursor: pointer;
+font-size: 15px;
+font-weight: 600;
+transition: 0.2s;
+}
+
+.chart-card button {
+background: #1a4499;
+}
+
+.chart-card a {
+display: block;
+text-align: center;
+margin-top: 15px;
+color: #0E2F76;
+text-decoration: none;
+font-size: 14px;
+}
+
+.chart-card a {
+text-decoration: underline;
 }

@@ -4,14 +4,59 @@
 
 @section('content')
 <div class="container-fluid p-0">
+
+    {{-- NAVBAR --}}
+    <div class="top-navbar">
+        <div class="navbar-title">
+        <i class="bi bi-chat-dots-fill"></i>
+        <span>Quick Chat</span>
+    </div>
+
+        <div class="navbar-user">
+            <div class="text-end me-2">
+            <div class="fw-bold">
+                {{ auth()->user()->name }}
+            </div>
+
+            <small class="user-status">
+                <span class="status-dot online"></span>
+                Online
+            </small>
+        </div>
+
+            <div
+                class="user-avatar-lg"
+                style="cursor:pointer"
+                data-bs-toggle="modal"
+                data-bs-target="#profileModal">
+
+                @if(auth()->user()->avatar)
+
+                    <img
+                        src="{{ asset('storage/'.auth()->user()->avatar) }}"
+                        style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+
+                @else
+
+                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+
+                @endif
+
+            </div>
+
+            <form action="/logout" method="POST">
+                @csrf
+
+                <button class="btn btn-secondary logout-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
 <div class="row g-0">
     {{-- ══ SIDEBAR ══ --}}
     <div class="col-md-3 sidebar">
-        <div class="sidebar-title d-flex align-items-center gap-2">
-    <i class="bi bi-chat-dots-fill"></i>
-    <span>Quick Chat</span>
-    </div>
-
     <div class="position-relative">
         <i class="bi bi-search search-icon"></i>
     <input
@@ -70,38 +115,10 @@
                 <div>
                     <div class="fw-bold" style="font-size:15px;color:#0E2F76">{{ $selectedUser->name }}</div>
                     <small class="user-status">
-    <span class="status-dot {{ $selectedUser->is_online ? 'online' : 'offline' }}"></span>
-
-    {{ $selectedUser->is_online ? 'Online' : 'Offline' }}
-</small>
+                        <span class="status-dot {{ $selectedUser->is_online ? 'online' : 'offline' }}"></span>
+                        {{ $selectedUser->is_online ? 'Online' : 'Offline' }}
+                    </small>
                 </div>
-            </div>
-
-            {{-- Kanan: profil pengirim (user yang login) + tombol logout --}}
-            <div class="sender-profile">
-                {{-- Nama + status ws dot --}}
-                <div style="text-align:right">
-                    <div class="fw-semibold" style="font-size:14px;color:#0E2F76;line-height:1.2">{{ auth()->user()->name }}
-                        <span class="ws-dot" id="wsDot" title="Status koneksi"></span>
-                    </div>
-                    <small style="font-size:11px;color:#5a7aaa" id="wsLabel">Menghubungkan...</small>
-                </div>
-                {{-- Avatar pengirim --}}
-                <div class="user-avatar-lg" title="Klik untuk ganti foto" data-bs-toggle="modal" data-bs-target="#profileModal" style="cursor:pointer;overflow:hidden;">
-                @if(auth()->user()->avatar)
-                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" style="width:100%;height:100%;object-fit:cover;">
-                @else
-                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
-                @endif
-            </div>
-                {{-- Logout --}}
-                <form action="/logout" method="POST" class="d-inline">
-                @csrf
-
-                <button type="submit" class="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center" style="width:40px;height:40px;" title="Logout">
-                    <i class="bi bi-box-arrow-right fs-5"></i></button>
-
-                </form>
             </div>
         </div>
 
@@ -124,7 +141,9 @@
                            target="_blank"
                            download="{{ $message->file_name }}"
                            class="{{ $mine ? 'file-link-sent' : 'file-link-received' }}">
-                            <span class="file-icon">📄</span>
+                            <span class="file-icon">
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                            </span>
                             <div>
                                 <div style="font-weight:600">{{ $message->file_name }}</div>
                                 <small>{{ $message->file_size ? number_format($message->file_size/1024,1).' KB' : '' }}</small>
@@ -145,9 +164,10 @@
 
             {{-- Preview file sebelum dikirim --}}
             <div id="filePreview" class="file-preview-bar d-none">
-                <span>📎</span>
+                <i class="bi bi-paperclip"></i>
                 <span id="filePreviewName" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-                <button type="button" id="fileCancelBtn" title="Batal">✕</button>
+                <button type="button" id="fileCancelBtn"  class="btn btn-sm" title="Batal">
+                    <i class="bi bi-x-lg"></i></button>
             </div>
 
             {{-- Emoji picker --}}
@@ -195,12 +215,12 @@
 
     @else
         <div class="d-flex justify-content-center align-items-center h-100 flex-column gap-2">
-            <div style="font-size:52px">💬</div>
+            <i class="bi bi-chat-left-dots-fill"
+                style="font-size:52px;color:#0E2F76;"></i>
             <h5 style="color:#0E2F76;opacity:.6">Pilih user untuk memulai chat</h5>
         </div>
     @endif
     </div>
-
 </div>
 </div>
 
@@ -237,7 +257,7 @@ window.authUserId = {{ auth()->id() }};
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ── Indikator status WebSocket (dot + label kecil) ──
+    // Indikator status WebSocket (dot + label kecil) 
     const dot   = document.getElementById('wsDot');
     const label = document.getElementById('wsLabel');
 
@@ -261,14 +281,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ── Tombol lampiran ──
+    // Tombol lampiran
     const attachBtn = document.getElementById('attachBtn');
     const fileInput = document.getElementById('fileInput');
     if (attachBtn && fileInput) {
         attachBtn.addEventListener('click', () => fileInput.click());
     }
 
-    // ── Emoji picker ──
+    // Emoji picker 
     const emojiBtn     = document.getElementById('emojiBtn');
     const emojiWrapper = document.getElementById('emojiPickerWrapper');
     const emojiPicker  = document.getElementById('emojiPicker');
