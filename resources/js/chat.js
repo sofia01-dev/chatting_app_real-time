@@ -91,7 +91,7 @@ if (fileInput) {
         if (!file) return;
 
         if (filePreviewName)
-            filePreviewName.textContent = '${file.name} (${formatFileSize(file.size)})';
+            filePreviewName.textContent = `${file.name} (${formatFileSize(file.size)})`;
         if (filePreview) filePreview.classList.remove("d-none");
     });
 }

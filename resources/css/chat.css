@@ -7,6 +7,7 @@ body { background: #F5FEFF; margin: 0; font-family: 'Segoe UI', sans-serif; }
     background: #F5FEFF;
     border-right: 2px solid #dceeff;
     overflow-y: auto;
+    padding-top:12px;
 }
 .sidebar-title {
     font-size: 20px;
@@ -31,19 +32,27 @@ body { background: #F5FEFF; margin: 0; font-family: 'Segoe UI', sans-serif; }
 .user-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     color: #0E2F76;
     text-decoration: none;
-    padding: 10px 14px;
-    transition: background .15s;
-    border-radius: 12px;
-    margin: 2px 8px;
+    padding:14px;
+    transition:.25s;
+    border-radius: 18px;
+    margin: 10px 12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 .user-item:hover { background: #dceeff; }
 .user-active     { background: #0E2F76 !important; color: #F5FEFF !important; }
 .user-active .user-name  { color: #F5FEFF !important; }
 .user-active .user-status { color: rgba(245,254,255,.75) !important; }
 .user-active .user-avatar-sm { background: rgba(245,254,255,.2) !important; color: #0E2F76 !important; }
+.user-active .last-message{
+    color:rgba(255,255,255,.8) !important;
+}
+
+.user-active .message-time{
+    color:rgba(255,255,255,.7) !important;
+}
 
 /* Avatar bulat inisial */
 .user-avatar-sm {
@@ -159,10 +168,10 @@ body { background: #F5FEFF; margin: 0; font-family: 'Segoe UI', sans-serif; }
 .emoji-picker-wrapper.show { display: block; }
 emoji-picker {
     --border-radius: 16px;
-    --background: #0E2F76;
+    --background: #F5FEFF;
     --border-color: #1a4499;
     --input-border-color: rgba(245,254,255,.3);
-    --input-font-color: #F5FEFF;
+    --input-font-color: black;
     --emoji-size: 1.4rem;
 }
 
@@ -170,11 +179,11 @@ emoji-picker {
 .file-preview-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     background: #dceeff;
     border-radius: 12px;
-    padding: 7px 14px;
-    margin-bottom: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
     color: #0E2F76;
     font-size: 13px;
     border: 1px solid #b8d4ef;
@@ -388,4 +397,58 @@ font-size: 14px;
 
 .chart-card a {
 text-decoration: underline;
+}
+.user-info{
+    flex:1;
+}
+
+.user-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.user-time{
+    font-size:12px;
+    color:#7f8c8d;
+}
+
+.user-status{
+    font-size:12px;
+    color:#7f8c8d;
+    margin-top:2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.user-avatar-wrapper{
+    position: relative;
+}
+
+.online-dot{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    width: 12px;
+    height: 12px;
+
+    background: #22c55e;
+    border: 2px solid #F5FEFF;
+    border-radius: 50%;
+}
+.password-group{
+    position: relative;
+}
+
+.toggle-password{
+    position: absolute;
+    right: 15px;
+    top: 9px;
+    cursor: pointer;
+    color: #777;
+}
+
+.toggle-password:hover{
+    color: #0E2F76;
 }

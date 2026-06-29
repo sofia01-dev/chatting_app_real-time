@@ -53,41 +53,62 @@
             </form>
         </div>
     </div>
-    
 <div class="row g-0">
+
     {{-- ══ SIDEBAR ══ --}}
     <div class="col-md-3 sidebar">
     <div class="position-relative">
         <i class="bi bi-search search-icon"></i>
-    <input
-        type="text"
-        id="searchUser"
-        class="search-box"
-        placeholder="Cari user...">
+    <input type="text" id="searchUser" class="search-box" placeholder="Cari user...">
     </div>
         <div class="px-1 mt-1">
             @foreach($users as $user)
             <a href="/chat/{{ $user->id }}"
                class="user-item user-search @if(isset($selectedUser) && $selectedUser->id == $user->id) user-active @endif" data-name="{{ strtolower($user->name) }}">
-                <div class="user-avatar-sm">
 
-            @if($user->avatar)
-                <img src="{{ asset('storage/'.$user->avatar) }}" style=" width:100%;height:100%;border-radius:50%;object-fit:cover ">
-            @else
-                {{ strtoupper(substr($user->name,0,1)) }}
+        <div class="user-avatar-wrapper">
+
+            <div class="user-avatar-sm">
+                @if($user->avatar)
+                    <img src="{{ asset('storage/'.$user->avatar) }}" style=" width:100%;height:100%;border-radius:50%;object-fit:cover ">
+                @else
+                    {{ strtoupper(substr($user->name,0,1)) }}
+                @endif
+            </div>
+            @if($user->is_online)
+                <span class="online-dot"></span>
             @endif
         </div>
 
-        <div>
-    <div class="user-name fw-semibold" style="font-size:14px">
-        {{ $user->name }}
+        <div class="user-info">
+
+    <div class="user-top">
+        <span class="user-name fw-semibold">
+            {{ $user->name }}
+        </span>
+
+        @if(isset($user->lastMessage))
+            <span class="user-time">
+                {{ $user->lastMessage->created_at->format('H:i') }}
+            </span>
+        @endif
     </div>
 
-    <small class="user-status">
-        <span class="status-dot {{ $user->is_online ? 'online' : 'offline' }}"></span>
+    <div class="user-status">
+        @if(isset($user->lastMessage))
 
-        {{ $user->is_online ? 'Online' : 'Offline' }}
-    </small>
+            @if($user->lastMessage->message_type == 'image')
+                Gambar
+            @elseif($user->lastMessage->message_type == 'file')
+                File
+            @else
+                {{ \Illuminate\Support\Str::limit($user->lastMessage->message, 25) }}
+            @endif
+
+        @else
+            Belum ada pesan
+        @endif
+    </div>
 </div>
             </a>
             @endforeach
@@ -235,9 +256,13 @@
 
     <div class="modal-body text-center">
         @if(auth()->user()->avatar)
-            <img id="previewImage" src="{{ asset('storage/'.auth()->user()->avatar) }}" style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid #0E2F76;">
+            <img id="previewImage" src="{{ asset('storage/'.auth()->user()->avatar) }}"
+                class="d-block mx-auto mb-3" 
+                style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid #0E2F76;">
         @else
-            <img id="previewImage" src="{{ asset('images/avatar.png') }}" style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid #0E2F76;">
+            <img id="previewImage" src="{{ asset('images/avatar.png') }}" 
+                class="d-block mx-auto mb-3"
+                style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid #0E2F76;">
         @endif
 
         <form action="/profile/avatar" method="POST" enctype="multipart/form-data">

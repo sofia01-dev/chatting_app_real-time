@@ -7,7 +7,6 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
@@ -18,6 +17,20 @@ class ChatController extends Controller
             ->orderBy('name')
             ->get();
 
+        foreach ($users as $user) {
+
+            $user->lastMessage = Message::where(function ($q) use ($user) {
+                $q->where('sender_id', Auth::id())
+                ->where('receiver_id', $user->id);
+            })
+            ->orWhere(function ($q) use ($user) {
+                $q->where('sender_id', $user->id)
+                ->where('receiver_id', Auth::id());
+            })
+            ->latest()
+            ->first();
+        }
+
         return view('chat.index', ['users' => $users]);
     }
 
@@ -27,6 +40,20 @@ class ChatController extends Controller
             ->orderBy('is_online', 'desc')
             ->orderBy('name')
             ->get();
+
+        foreach ($users as $user) {
+
+            $user->lastMessage = Message::where(function ($q) use ($user) {
+                $q->where('sender_id', Auth::id())
+                ->where('receiver_id', $user->id);
+            })
+            ->orWhere(function ($q) use ($user) {
+                $q->where('sender_id', $user->id)
+                ->where('receiver_id', Auth::id());
+            })
+            ->latest()
+            ->first();
+        }
 
         $selectedUser = User::findOrFail($id);
 
@@ -52,7 +79,7 @@ class ChatController extends Controller
         $request->validate([
             'receiver_id' => 'required|integer|exists:users,id',
             'message'     => 'nullable|string|max:5000',
-            'file'        => 'nullable|file|max:10240', // max 10MB
+            'file'        => 'nullable|file|max:10240',
         ]);
 
         $messageType = 'text';
